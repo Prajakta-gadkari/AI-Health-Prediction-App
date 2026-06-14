@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import re
 
-from datetime import date
+from datetime import date, datetime
 
 from crud import (
     create_patient,
@@ -166,19 +166,22 @@ if st.button("Generate Prediction & Save"):
 
     if full_name.strip() == "":
 
-     st.error("Full Name cannot be empty")
+     st.error("Name cannot be empty")
 
     elif len(full_name.strip()) < 2:
 
-     st.error("Full Name must contain at least 2 characters")
+     st.error("Name must contain at least 2 characters")
 
     elif not re.match(r"^[A-Za-z ]+$",full_name):
 
-     st.error("Full Name should contain only alphabets")
+     st.error("Name should contain only alphabets")
 
     elif email.strip() == "":
 
      st.error("Email Address cannot be empty")
+
+    elif dob is None:
+     st.error("Date of Birth cannot be empty")
 
     elif not re.match( r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$",email):
 
@@ -201,7 +204,7 @@ if st.button("Generate Prediction & Save"):
             create_patient(
                 (
                     full_name.strip(),
-                    str(dob),
+                    dob.strftime("%d/%m/%Y"),
                     email.strip(),
                     glucose,
                     haemoglobin,
@@ -300,6 +303,11 @@ if "patient" in st.session_state:
         "Update Email",
         value=patient[3]
     )
+    updated_dob = st.date_input(
+      "Update Date of Birth",
+       value=datetime.strptime(patient[2],"%d/%m/%Y").date(),
+       format="DD/MM/YYYY"
+    )
     updated_glucose = st.number_input(
         "Update Glucose",
         value=float(patient[4]),
@@ -341,22 +349,18 @@ if "patient" in st.session_state:
         update_patient(
             update_id,
             updated_name,
-            patient[2],
+            updated_dob.strftime("%d/%m/%Y"),
             updated_email,
             updated_glucose,
             updated_haemoglobin,
             updated_cholesterol,
             remarks
         )
-
         st.success("Patient Updated Successfully")
-
         st.markdown("### Updated AI Analysis")
-
         st.warning(remarks)
-
         del st.session_state["patient"]
-        # st.rerun()
+        st.rerun()
 st.markdown("---")
 
 
@@ -397,10 +401,11 @@ if "view_patient" in st.session_state:
     st.write(f"**Glucose:** {patient[4]}")
     st.write(f"**Haemoglobin:** {patient[5]}")
     st.write(f"**Cholesterol:** {patient[6]}")
+    st.write(f"**Remarks:** {patient[7]}")
 
-    st.write("### 🤖 AI Prediction")
+    #st.write("### 🤖 AI Prediction")
 
-    st.info(patient[7])
+    #st.info(patient[7])
 
     if st.button(
         "OK",
