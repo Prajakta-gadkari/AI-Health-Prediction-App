@@ -95,19 +95,19 @@ for patient in patients:
 c1, c2, c3 = st.columns(3)
 with c1:
     st.metric(
-        "👨‍⚕️ Total Patients",
+        "Total Patients",
         total_patients
     )
 
 with c2:
     st.metric(
-        "⚠ High Risk Patients",
+        "High Risk Patients",
         high_risk
     )
 
 with c3:
     st.metric(
-        "✅ Healthy Patients",
+        "Healthy Patients",
         total_patients - high_risk
     )
 
@@ -165,26 +165,21 @@ st.info("""
 if st.button("Generate Prediction & Save"):
 
     if full_name.strip() == "":
-
      st.error("Name cannot be empty")
 
     elif len(full_name.strip()) < 2:
-
      st.error("Name must contain at least 2 characters")
 
     elif not re.match(r"^[A-Za-z ]+$",full_name):
-
      st.error("Name should contain only alphabets")
 
     elif email.strip() == "":
-
      st.error("Email Address cannot be empty")
 
     elif dob is None:
      st.error("Date of Birth cannot be empty")
 
     elif not re.match( r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$",email):
-
       st.error("Invalid Email Address")
 
     else:
@@ -214,9 +209,8 @@ if st.button("Generate Prediction & Save"):
             )
 
             st.success("Patient Saved Successfully")
-            st.markdown("### 🤖 AI Health Analysis")
-            st.warning(remarks)
-            #st.rerun() 
+            st.markdown("### AI Health Analysis")
+            st.warning(remarks) 
 st.markdown("---")
 
 # PATIENT RECORDS
@@ -262,7 +256,7 @@ if patients:
         index=False
     )
     st.download_button(
-        "📥 Download CSV",
+        "Download CSV",
         csv,
         "patients.csv",
         "text/csv"
@@ -289,9 +283,7 @@ if st.button("Load Patient"):
         st.session_state.patient = patient
 
     else:
-        st.error(
-            f"Patient ID {update_id} not found"
-        )
+        st.error(f"Patient ID {update_id} not found" )
 
 if "patient" in st.session_state:
     patient = st.session_state.patient
@@ -327,25 +319,25 @@ if "patient" in st.session_state:
     if st.button("Update Patient Record"):
      if updated_name.strip() == "":
       st.error("Full Name cannot be empty")
+
      elif len(updated_name.strip()) < 2:
       st.error("Full Name must contain at least 2 characters")
+
      elif not re.match(r"^[A-Za-z ]+$",updated_name):
       st.error("Full Name should contain only alphabets")
+
      elif updated_email.strip() == "":
       st.error("Email Address cannot be empty")
-     elif not re.match(
-        r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$",
-        updated_email):
+
+     elif not re.match(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$",updated_email):
       st.error("Invalid Email Address")
 
      else:
-
         remarks = generate_prediction(
             updated_glucose,
             updated_haemoglobin,
             updated_cholesterol
         )
-
         update_patient(
             update_id,
             updated_name,
@@ -382,16 +374,12 @@ if st.button("View Patient"):
         st.session_state["view_patient"] = patient
 
     else:
-        st.error(
-            f"Patient ID {read_id} not found"
-        )
+        st.error(f"Patient ID {read_id} not found")
 
 if "view_patient" in st.session_state:
 
     patient = st.session_state["view_patient"]
-
     st.success("Patient Found")
-
     st.write("### Patient Information")
 
     st.write(f"**ID:** {patient[0]}")
@@ -402,10 +390,6 @@ if "view_patient" in st.session_state:
     st.write(f"**Haemoglobin:** {patient[5]}")
     st.write(f"**Cholesterol:** {patient[6]}")
     st.write(f"**Remarks:** {patient[7]}")
-
-    #st.write("### 🤖 AI Prediction")
-
-    #st.info(patient[7])
 
     if st.button(
         "OK",
@@ -433,6 +417,4 @@ if st.button("Delete Patient"):
      st.success(f"Patient ID {patient_id} Deleted Successfully")
 
     else:
-        st.error(
-            f"Patient ID {patient_id} not found"
-        )
+        st.error(f"Patient ID {patient_id} not found")
