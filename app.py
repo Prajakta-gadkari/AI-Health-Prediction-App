@@ -65,7 +65,7 @@ div[data-testid="stMetric"] {
 
 # TITLE
 
-st.title("🩺 AI Health Prediction Application")
+st.title("AI Health Prediction Application")
 st.markdown("---")
 
 
@@ -234,7 +234,7 @@ if patients:
     )
 
     search = st.text_input(
-        "🔍 Search Patient by Name"
+        "Search Patient by Name"
     )
 
     if search:
@@ -287,6 +287,7 @@ if st.button("Load Patient"):
 
 if "patient" in st.session_state:
     patient = st.session_state.patient
+    
     updated_name = st.text_input(
         "Update Full Name",
         value=patient[1]
@@ -303,17 +304,17 @@ if "patient" in st.session_state:
     updated_glucose = st.number_input(
         "Update Glucose",
         value=float(patient[4]),
-        key="ug"
+        key=f"ug_{patient[0]}"
     )
     updated_haemoglobin = st.number_input(
         "Update Haemoglobin",
         value=float(patient[5]),
-        key="uh"
+        key=f"uh_{patient[0]}"
     )
     updated_cholesterol = st.number_input(
         "Update Cholesterol",
         value=float(patient[6]),
-        key="uc"
+        key=f"uc_{patient[0]}"
     )
 
     if st.button("Update Patient Record"):
