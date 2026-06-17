@@ -349,13 +349,13 @@ if "patient" in st.session_state:
             updated_cholesterol,
             remarks
         )
-        st.success("Patient Updated Successfully")
-        st.markdown("### Updated AI Analysis")
-        st.warning(remarks)
+        st.session_state["update_msg"] = (f"Patient ID {update_id} Updated Successfully")
         del st.session_state["patient"]
         st.rerun()
+if "update_msg" in st.session_state:
+    st.success(st.session_state["update_msg"])
+    del st.session_state["update_msg"]       
 st.markdown("---")
-
 
 # READ PATIENT
 
@@ -370,10 +370,8 @@ read_id = st.number_input(
 if st.button("View Patient"):
 
     patient = get_patient_by_id(read_id)
-
     if patient:
         st.session_state["view_patient"] = patient
-
     else:
         st.error(f"Patient ID {read_id} not found")
 
@@ -392,17 +390,16 @@ if "view_patient" in st.session_state:
     st.write(f"**Cholesterol:** {patient[6]}")
     st.write(f"**Remarks:** {patient[7]}")
 
-    if st.button(
-        "OK",
-        key="ok_read_patient"
-    ):
+    if st.button( "OK",key="ok_read_patient" ):
         del st.session_state["view_patient"]
         st.rerun()
 st.markdown("---")
 
+
 # DELETE PATIENT
 
-st.subheader(" Delete Patient")
+st.subheader("Delete Patient")
+
 patient_id = st.number_input(
     "Enter Patient ID To Delete",
     min_value=1,
@@ -413,9 +410,12 @@ patient_id = st.number_input(
 if st.button("Delete Patient"):
 
     result = delete_patient(patient_id)
-
     if result > 0:
-     st.success(f"Patient ID {patient_id} Deleted Successfully")
-
+        st.session_state["delete_msg"] = (f"Patient ID {patient_id} Deleted Successfully")
+        st.rerun()
     else:
-        st.error(f"Patient ID {patient_id} not found")
+        st.error( f"Patient ID {patient_id} not found")
+
+if "delete_msg" in st.session_state:
+    st.success(st.session_state["delete_msg"])
+    del st.session_state["delete_msg"]
